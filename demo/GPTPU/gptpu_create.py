@@ -13,31 +13,8 @@ class BMM(tf.Module):
         divisor = 2.0
         c = tf.math.divide_no_nan(c,divisor)
         return c
-#        divisor = 2.0
-#        c = tf.math.divide_no_nan(c,divisor)
-#        c = tf.reshape(c, [8])
-#        c = tf.cast(c, tf.int32)
-#        result = 0
-#        multiplier = 2
-#        multiplier = tf.cast(multiplier,tf.int32)
-#        for x in range(8):
-#            result = tf.math.multiply(result,multiplier) + c[x]
-#        return result
-    
-def bmm(input):
-    a = tf.constant(input[0:16], dtype=tf.float32)
-    a = tf.reshape(a, [4,4])
-    b = tf.constant(input[16:24], dtype=tf.float32)
-    b = tf.reshape(b, [4,2])
-    c = tf.linalg.matmul(a,b)
-    divisor = 2.0
-    c = tf.math.divide_no_nan(c,divisor)
-    c = tf.reshape(c, [8])
-    c = tf.cast(c, tf.uint8)
-    result = 0
-    for x in range(8):
-        result = result * 2 + c[x]
-    return result
+
+
 
 def main():
     np.random.seed(10)
@@ -58,8 +35,6 @@ def main():
         for y in range(8):
             result = (result << 1) + c[y]
         print(result)
-#        result = bmm(input)
-#        print(result)
     input = np.random.randint(2,size=24)
     model = BMM()
     concrete_func = model.__call__.get_concrete_function()
